@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import uuid4 from "uuid4";
-import { db } from "../../firebase";
-import { ref, get, set, push } from "firebase/database";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const CrearFormulario = () => {
+const CrearFormulario = ({crearPropiedad, editarPropiedad}) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const propiedadToEdit = location.state?.propiedad || null;
   const [propiedad, setPropiedad] = useState({
-    id: "",
+    id: null,
     nombre: "",
     direccion: "",
     precio_de_renta: "",
@@ -17,23 +18,13 @@ const CrearFormulario = () => {
     tiempo_restante_de_contrato: "",
   });
 
-  //crearPropiedad
-  const crearPropiedad = (propiedad) => {
-    const propId = uuid4();
-    const propData = {
-      id: propId,
-      ...propiedad,
-    };
-    const propRef = push(ref(db, "propiedades"));
-    set(propRef, propData)
-      .then(() => {
-        console.log("creada correactamente");
-      })
-      .catch((err) => console.log(err));
-  };
+  useEffect(() => {
+    if (propiedadToEdit) {
+      setPropiedad(propiedadToEdit);
+    }
+  }, [propiedadToEdit]);
 
-  //editarPropiedad
-  const editarPropiedad = (propiedad) => {};
+
   //handleChange
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -46,7 +37,7 @@ const CrearFormulario = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (propiedad.id) {
+    if (propiedad.id !== null) {
       editarPropiedad(propiedad);
     } else {
       crearPropiedad(propiedad);
