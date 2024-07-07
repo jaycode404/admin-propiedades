@@ -1,0 +1,65 @@
+{
+    "propiedades": [
+      {
+        "id": 1,
+        "nombre": "Departamento Centro",
+        "direccion": "Calle Falsa 123, Centro",
+        "precio_de_renta": 1500,
+        "estado": "Ocupado",
+        "pago_corriente": true,
+        "dia_de_pago": 5,
+        "numero_de_inquilinos": 3,
+        "duracion_de_contrato": "12 meses",
+        "tiempo_restante_de_contrato": "6 meses"
+      },
+      {
+        "id": 2,
+        "nombre": "Casa Suburbios",
+        "direccion": "Avenida Siempreviva 742, Suburbios",
+        "precio_de_renta": 2000,
+        "estado": "Disponible",
+        "pago_corriente": false,
+        "dia_de_pago": null,
+        "numero_de_inquilinos": 0,
+        "duracion_de_contrato": null,
+        "tiempo_restante_de_contrato": null
+      },
+      {
+        "id": 3,
+        "nombre": "Estudio Moderno",
+        "direccion": "Calle del Sol 456, Centro",
+        "precio_de_renta": 1200,
+        "estado": "Ocupado",
+        "pago_corriente": true,
+        "dia_de_pago": 1,
+        "numero_de_inquilinos": 1,
+        "duracion_de_contrato": "6 meses",
+        "tiempo_restante_de_contrato": "2 meses"
+      },
+      {
+        "id": 4,
+        "nombre": "Apartamento de Lujo",
+        "direccion": "Boulevard de los Sueños 987, Centro",
+        "precio_de_renta": 3500,
+        "estado": "Ocupado",
+        "pago_corriente": false,
+        "dia_de_pago": 15,
+        "numero_de_inquilinos": 2,
+        "duracion_de_contrato": "24 meses",
+        "tiempo_restante_de_contrato": "18 meses"
+      },
+      {
+        "id": 5,
+        "nombre": "Cabaña en el Bosque",
+        "direccion": "Camino del Árbol 321, Montaña",
+        "precio_de_renta": 1000,
+        "estado": "Disponible",
+        "pago_corriente": false,
+        "dia_de_pago": null,
+        "numero_de_inquilinos": 0,
+        "duracion_de_contrato": null,
+        "tiempo_restante_de_contrato": null
+      }
+    ]
+  }
+  

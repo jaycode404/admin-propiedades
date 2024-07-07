@@ -1,0 +1,91 @@
+/* CSS Reset */
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+*,
+:before,
+:after {
+  box-sizing: inherit;
+}
+/* GENERAL ---------- */
+.button {
+  padding: 0.3rem;
+  text-transform: uppercase;
+}
+/* ELEMENTS ----- */
+li {
+  list-style: none;
+}
+/* NAVBAR-------- */
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 0 auto;
+  padding: 1em;
+}
+.navlist-container {
+  display: flex;
+  gap: 1rem;
+}
+/* HEADER ------- */
+.header-container {
+  text-align: center;
+}
+.header-container h1 {
+  font-size: 100px;
+}
+
+/* LOGIN ------- */
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  margin: 3rem auto;
+  gap: 1rem;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.login-container form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+/* PROPIEDADES -------------- */
+.propiedades-container {
+  width: 90%;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+/* PRPOPIEDAD ------------- */
+.propiedad-card {
+  width: 20rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  background-color: gray;
+  border-radius: 10px;
+}
+.propiedad-card img {
+  width: 100%;
+}
+.card-button-container {
+  display: flex;
+  gap: 1rem;
+}
