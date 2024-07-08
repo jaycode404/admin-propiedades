@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-export default function PropiedadCard({ propiedad, editarPropiedad, setCreateForm }) {
+export default function PropiedadCard({ propiedad, editarPropiedad, setCreateForm, eliminarPropiedad }) {
   const navigate =  useNavigate()
   const {
     id,
@@ -18,6 +18,7 @@ export default function PropiedadCard({ propiedad, editarPropiedad, setCreateFor
   const handleEdit = () => {
     navigate('/crear-propiedad', {state: {propiedad}})
   }
+  
   return (
     <div className="propiedad-card">
       <img src="/assets/propiedad-1.jpg" alt="" />
@@ -32,7 +33,7 @@ export default function PropiedadCard({ propiedad, editarPropiedad, setCreateFor
       <p>{duracion_de_contrato}</p>
       <p>{tiempo_restante_de_contrato}</p>
       <div className="card-button-container">
-        <button className="button" >
+        <button onClick={() => {eliminarPropiedad(id)}} className="button" >
           Eliminar
         </button>
         <button onClick={handleEdit} className="button">

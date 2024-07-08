@@ -1,12 +1,17 @@
 import React, { useState, useContext } from "react";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
-
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import { GeneralContext } from "../context/GeneralContext";
 import { db } from "../../firebase";
 
 export default function Login() {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
@@ -28,15 +33,35 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    signInWithEmailAndPassword(auth, loginForm.email, loginForm.password)
+    const auth = getAuth();
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        return signInWithEmailAndPassword(
+          auth,
+          loginForm.email,
+          loginForm.password
+        );
+      })
       .then((userCredential) => {
-        setData({ user: loginForm.email, isLoggedIn: true });
-        console.log("Usuario válido");
-        console.log(data.isLoggedIn);
-        history("/propiedades");
-        // window.history.pushState({}, undefined, "/propiedades");
+        const user = userCredential.user;
+        if (user) {
+          setData({ user: user.email, isLoggedIn: true });
+          Swal.fire({
+            title: "Bienvenido",
+            text: "sesion iniciada..",
+            icon: "success",
+          });
+          setTimeout(() => {
+            navigate("/propiedades");
+          }, 2000);
+        }
       })
       .catch((error) => {
+        Swal.fire({
+          title: "Datos incorrectos",
+          text: "los datos no coinciden",
+          icon: "error",
+        });
         console.error("Error de inicio de sesión:", error.message);
       });
   };

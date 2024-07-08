@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
-const CrearFormulario = ({crearPropiedad, editarPropiedad}) => {
+const propInitialState = {
+  id: null,
+  nombre: "",
+  direccion: "",
+  precio_de_renta: "",
+  estado: "",
+  pago_corriente: false,
+  dia_de_pago: "",
+  numero_de_inquilinos: "",
+  duracion_de_contrato: "",
+  tiempo_restante_de_contrato: "",
+};
+const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const propiedadToEdit = location.state?.propiedad || null;
-  const [propiedad, setPropiedad] = useState({
-    id: null,
-    nombre: "",
-    direccion: "",
-    precio_de_renta: "",
-    estado: "",
-    pago_corriente: false,
-    dia_de_pago: "",
-    numero_de_inquilinos: "",
-    duracion_de_contrato: "",
-    tiempo_restante_de_contrato: "",
-  });
+  const [propiedad, setPropiedad] = useState(propInitialState);
 
   useEffect(() => {
     if (propiedadToEdit) {
       setPropiedad(propiedadToEdit);
     }
   }, [propiedadToEdit]);
-
 
   //handleChange
   const handleChange = (e) => {
@@ -39,8 +38,12 @@ const CrearFormulario = ({crearPropiedad, editarPropiedad}) => {
     e.preventDefault();
     if (propiedad.id !== null) {
       editarPropiedad(propiedad);
+      setPropiedad(propInitialState);
+      navigate("/propiedades");
     } else {
       crearPropiedad(propiedad);
+      setPropiedad(propInitialState);
+      navigate("/propiedades");
     }
   };
 
