@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
 const propInitialState = {
   id: null,
   nombre: "",
@@ -11,6 +12,7 @@ const propInitialState = {
   numero_de_inquilinos: "",
   duracion_de_contrato: "",
   tiempo_restante_de_contrato: "",
+  imagen: '',
 };
 const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
   const navigate = useNavigate();
@@ -26,31 +28,40 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
 
   //handleChange
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setPropiedad((prevPropiedad) => ({
-      ...prevPropiedad,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-    console.log(propiedad);
+    const { name, value, type, checked, files } = e.target;
+    if (type === "file") {
+      setPropiedad((prevPropiedad) => ({
+        ...prevPropiedad,
+        [name]: files[0]?.name.replace(/^.*[\\\/]/, ""),
+      }));
+      console.log(files[0].name);
+    } else {
+      setPropiedad((prevPropiedad) => ({
+        ...prevPropiedad,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (propiedad.id !== null) {
       editarPropiedad(propiedad);
-      setPropiedad(propInitialState);
-      navigate("/propiedades");
     } else {
       crearPropiedad(propiedad);
-      setPropiedad(propInitialState);
-      navigate("/propiedades");
     }
+    setPropiedad(propInitialState);
+    navigate("/propiedades");
   };
 
   return (
     <div className="form-card crear-form">
       <h2>{propiedad.id ? "Editar" : "Crear"}</h2>
       <form onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="imagen">Imagen:</label>
+          <input type="file" name="imagen" onChange={handleChange} />
+        </div>
         <div>
           <label htmlFor="nombre">Nombre:</label>
           <input

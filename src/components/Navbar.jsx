@@ -9,7 +9,7 @@ export const NavList = () => {
   const propiedad = {};
 
   const handleCreate = () => {
-    navigate("/crear-propiedad", { state: { propiedad } });
+    navigate("/crear-propiedad");
   };
   const handleLogOut = () => {
     const auth = getAuth();

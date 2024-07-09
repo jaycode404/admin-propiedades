@@ -12,7 +12,9 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { GeneralContext } from "./context/GeneralContext";
+import DragDrop from "./components/DragDrop";
 Swal;
+
 const App = () => {
   const { data, setData } = useContext(GeneralContext);
   const [loading, setLoading] = useState(true);

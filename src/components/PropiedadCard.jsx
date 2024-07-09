@@ -1,11 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-export default function PropiedadCard({
-  propiedad,
-  editarPropiedad,
-  setCreateForm,
-  eliminarPropiedad,
-}) {
+export default function PropiedadCard({ propiedad, eliminarPropiedad }) {
   const navigate = useNavigate();
   const {
     id,
@@ -18,17 +13,29 @@ export default function PropiedadCard({
     numero_de_inquilinos,
     duracion_de_contrato,
     tiempo_restante_de_contrato,
+    imagen,
   } = propiedad;
 
   const handleEdit = () => {
     navigate("/crear-propiedad", { state: { propiedad } });
-    
   };
 
   return (
     <div className="propiedad-card">
-      <img src="/assets/propiedad-1.jpg" alt="" />
+      {imagen !== "" ? (
+        <img src={`/imagenes/${imagen}`} alt="" />
+      ) : (
+        <img src="/imagenes/propiedad-1.jpg" alt="" />
+      )}
       <div className="card-info-container">
+        <div>
+          <h3>id:</h3>
+          <p>{id}</p>
+        </div>
+        {/* <div>
+          <h3>imagen:</h3>
+          <p>{imagen === '' ? 'no hay imagen' : 'si hay'}</p>
+        </div> */}
         <div>
           <h3>Nombre:</h3>
           <p>{nombre}</p>

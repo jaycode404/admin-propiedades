@@ -6,7 +6,6 @@ const GeneralProvider = ({ children }) => {
   const [data, setData] = useState({
     user: null,
     isLoggedIn: false,
-    propiedad: {},
   });
   return (
     <GeneralContext.Provider value={{ data, setData }}>
