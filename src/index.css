@@ -1,4 +1,28 @@
+/* font-family: "Roboto", sans-serif; 
+font-family: "Poppins", sans-serif;
+*/
+
+:root {
+  --main-font: "Roboto", sans-serif;
+  --secondary-font: "Poppins", sans-serif;
+  --section-width: 90%;
+  --mid-weight: 500;
+  --high-weight: 700;
+  --bold-weight: 900;
+  --main-black: #131416;
+  --main-gray: #393b40;
+  --second-gray: #636c77;
+  --soft-gray: #7f8891;
+  --text-color: #dbdee2;
+  --white: #f5f6f6;
+  --azul: #1f78f1;
+  --red: #c90c0c;
+  --green: #09b00b;
+  --amarillo: #ffc008;
+  --border-radius: 5px;
+}
 /* CSS Reset */
+
 * {
   padding: 0;
   margin: 0;
@@ -8,20 +32,93 @@ html {
   box-sizing: border-box;
   scroll-behavior: smooth;
 }
-
+body {
+  background-color: var(--main-black);
+  font-family: var(--main-font);
+  color: var(--text-color);
+}
 *,
 :before,
 :after {
   box-sizing: inherit;
 }
+
 /* GENERAL ---------- */
+.button:hover {
+  cursor: pointer;
+}
+.button-red {
+  background-color: var(--red);
+}
+.button-green {
+  background-color: var(--green);
+}
+.button-blue {
+  background-color: var(--azul);
+}
 .button {
-  padding: 0.3rem;
+  padding: 0.4rem;
   text-transform: uppercase;
+  border-radius: var(--border-radius);
+  border: none;
+  color: var(--text-color);
+  font-weight: 900;
+  width: fit-content;
+  height: fit-content;
+}
+.symbol {
+  color: var(--azul);
 }
 /* ELEMENTS ----- */
+a:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+a {
+  padding: 3px;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 2px solid transparent;
+}
+a::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  bottom: 0;
+  left: 50%;
+  height: 2px;
+  background-color: var(--azul);
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  transition: transform 0.1s ease-in-out;
+}
 li {
   list-style: none;
+}
+
+input::placeholder {
+  font-weight: var(--mid-weight);
+}
+input {
+  padding: 0.3rem;
+  font-family: var(--main-font);
+  background-color: var(--main-gray);
+  border: none;
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+}
+section {
+  padding: 2rem;
+  margin: 0 auto;
+  width: var(--section-width);
+}
+section h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  font-weight: var(--bold-weight);
+  font-size: 40px;
 }
 /* NAVBAR-------- */
 
@@ -31,22 +128,43 @@ li {
   width: 80%;
   margin: 0 auto;
   padding: 1em;
+  font-weight: var(--mid-weight);
+  align-items: center;
 }
 .navlist-container {
+  align-items: center;
   display: flex;
   gap: 1rem;
 }
 /* HEADER ------- */
+
 .header-container {
+  position: relative;
   text-align: center;
+}
+.header-container::before {
+  position: absolute;
+  content: "";
+  background-image: url(/public/assets/header-bg.webp);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  inset: 0 0 0 0;
+  z-index: -1;
+  filter: blur(1px);
 }
 .header-container h1 {
   font-size: 100px;
+  color: var(--text-color);
 }
 
 /* LOGIN ------- */
 
 .login-container {
+  background-color: var(--main-black);
+
   display: flex;
   flex-direction: column;
   place-items: center;
@@ -64,6 +182,30 @@ li {
   flex-direction: column;
   gap: 0.5rem;
 }
+form label {
+  font-weight: 700;
+}
+
+form .button {
+  width: 100%;
+}
+
+.form-card {
+  margin: 0 auto;
+}
+.crear-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 50%;
+  margin: 0 auto;
+}
+.crear-form form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
 /* PROPIEDADES -------------- */
 .propiedades-container {
   width: 90%;
@@ -74,18 +216,42 @@ li {
 }
 /* PRPOPIEDAD ------------- */
 .propiedad-card {
-  width: 20rem;
+  width: fit-content;
+  max-width: 30%;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 2rem;
-  background-color: gray;
-  border-radius: 10px;
+  padding: 1rem;
+  background-color: var(--main-gray);
+  border-radius: var(--border-radius);
 }
 .propiedad-card img {
   width: 100%;
+  border-radius: var(--border-radius);
 }
 .card-button-container {
   display: flex;
   gap: 1rem;
+}
+.card-info-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 15rem;
+  gap: 0.5rem;
+  font-weight: var(--mid-weight);
+}
+.card-info-container p {
+  font-size: 12px;
+}
+.card-info-container h3 {
+  font-size: 14px;
+  color: var(--white);
+}
+.pagado {
+  color: var(--green);
+}
+.pendiente {
+  color: var(--amarillo);
 }

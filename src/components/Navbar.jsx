@@ -6,7 +6,11 @@ export const NavList = () => {
   const links = ["Login"];
   const navigate = useNavigate();
   const { data, setData } = useContext(GeneralContext);
+  const propiedad = {}
 
+  const handleCreate = () => {
+    navigate("/crear-propiedad", { state: { propiedad } });
+  };
   const handleLogOut = () => {
     const auth = getAuth();
     signOut(auth)
@@ -23,8 +27,12 @@ export const NavList = () => {
     <div className="navlist-container">
       {data.isLoggedIn ? (
         <>
-          <a href="/crear-propiedad">crear propiedad</a>
-          <button onClick={handleLogOut}>Cerrar Sesión</button>
+          <button onClick={handleCreate} className="button button-blue">
+            Crear <span className="symbol">+</span>
+          </button>
+          <button className="button button-blue" onClick={handleLogOut}>
+            Cerrar Sesión
+          </button>
         </>
       ) : (
         <a href={"/"}>Login </a>

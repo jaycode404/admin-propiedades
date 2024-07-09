@@ -3,9 +3,8 @@ import { db } from "../../firebase.js";
 import { ref, get } from "firebase/database";
 import PropiedadCard from "./PropiedadCard.jsx";
 export default function Propiedades({ eliminarPropiedad, propiedades }) {
-
   return (
-    <section>
+    <section id="propiedades">
       <h2>Propiedades</h2>
       <div className="propiedades-container">
         {propiedades.map((propiedad, i) => {

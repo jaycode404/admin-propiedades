@@ -48,8 +48,7 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
   };
 
   return (
-    <div>
-      <h2>buenas</h2>
+    <div className="form-card crear-form">
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="nombre">Nombre:</label>
@@ -144,7 +143,12 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
             onChange={handleChange}
           />
         </div>
-        <button type="submit">Guardar Propiedad</button>
+        <button
+          type="submit"
+          className={`button ${propiedad.id ? "button-green" : "button-blue"}`}
+        >
+          Guardar Propiedad
+        </button>
       </form>
     </div>
   );

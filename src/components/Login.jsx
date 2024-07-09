@@ -74,6 +74,7 @@ export default function Login() {
           <div>
             <label htmlFor="email">Email:</label>
             <input
+              placeholder="su correo electrónico..."
               onChange={handleChange}
               name="email"
               type="email"
@@ -84,13 +85,14 @@ export default function Login() {
           <div>
             <label htmlFor="password">Password:</label>
             <input
+              placeholder="su contraseña..."
               onChange={handleChange}
               type="password"
               name="password"
               value={loginForm.password}
             />
           </div>
-          <button type="submit" className="button">
+          <button type="submit" className="button button-blue">
             Log in
           </button>
         </form>
