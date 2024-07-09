@@ -22,6 +22,7 @@ export default function PropiedadCard({
 
   const handleEdit = () => {
     navigate("/crear-propiedad", { state: { propiedad } });
+    
   };
 
   return (

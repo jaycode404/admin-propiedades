@@ -6,7 +6,7 @@ export const NavList = () => {
   const links = ["Login"];
   const navigate = useNavigate();
   const { data, setData } = useContext(GeneralContext);
-  const propiedad = {}
+  const propiedad = {};
 
   const handleCreate = () => {
     navigate("/crear-propiedad", { state: { propiedad } });

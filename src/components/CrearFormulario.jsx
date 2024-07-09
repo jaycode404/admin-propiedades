@@ -49,6 +49,7 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
 
   return (
     <div className="form-card crear-form">
+      <h2>{propiedad.id ? "Editar" : "Crear"}</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="nombre">Nombre:</label>
