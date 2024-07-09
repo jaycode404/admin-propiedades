@@ -145,7 +145,7 @@ section h2 {
 .header-container::before {
   position: absolute;
   content: "";
-  background-image: url(/public/assets/header-bg.webp);
+  background-image: url(/assets/header-bg.webp);
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
