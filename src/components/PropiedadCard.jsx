@@ -25,17 +25,17 @@ export default function PropiedadCard({ propiedad, eliminarPropiedad }) {
       {imagen !== "" ? (
         <img src={`/imagenes/${imagen}`} alt="" />
       ) : (
-        <img src="/imagenes/propiedad-1.jpg" alt="" />
+        <img src="/assets/propiedad-1.jpg" alt="" />
       )}
       <div className="card-info-container">
-        <div>
+        {/* <div>
           <h3>id:</h3>
           <p>{id}</p>
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <h3>imagen:</h3>
           <p>{imagen === '' ? 'no hay imagen' : `${imagen}`}</p>
-        </div>
+        </div> */}
         <div>
           <h3>Nombre:</h3>
           <p>{nombre}</p>

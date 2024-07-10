@@ -31,13 +31,40 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.get("/", (req, res) => {
-  res.send("hola desde server.js");
+//GET
+app.get("/imagenes/:imagen", (req, res) => {
+  const { imagen } = req.params;
+  const filePath = path.join(imagePath, imagen);
+
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      res.status(404).send("Imagen no encontrada");
+    } else {
+      res.send("Imagen existe");
+    }
+  });
 });
 
+//POST
 app.post("/imagenes", upload.single("imagen"), (req, res) => {
   res.send("archivo subido con exito");
   console.log("imagen subida desde server.js");
+});
+
+//DELETE
+app.delete("/imagenes/:imagen", (req, res) => {
+  const { imagen } = req.params;
+  const filePath = path.join(imagePath, imagen);
+
+  fs.unlink(filePath, (err) => {
+    if (err) {
+      console.error("Error al borrar la imagen:", err);
+      res.status(500).send("Error al borrar la imagen");
+      return;
+    }
+    console.log(`Imagen ${imagen} borrada correctamente`);
+    res.send(`Imagen ${imagen} borrada correctamente`);
+  });
 });
 
 app.listen(port, () => {

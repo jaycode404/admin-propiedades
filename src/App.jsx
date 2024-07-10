@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { GeneralContext } from "./context/GeneralContext";
 import DragDrop from "./components/DragDrop";
 Swal;
+import axios from "axios";
 
 const App = () => {
   const { data, setData } = useContext(GeneralContext);
@@ -98,7 +99,7 @@ const App = () => {
   };
 
   //ELIMINAR PROPIEDAD
-  const eliminarPropiedad = (id) => {
+  const eliminarPropiedad = async (id) => {
     try {
       if (id) {
         Swal.fire({
@@ -109,16 +110,46 @@ const App = () => {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Sí, eliminar propiedad!",
-        }).then((result) => {
+        }).then(async (result) => {
           if (result.isConfirmed) {
             console.log("eliminando");
-            
 
+            //fetch delete axios
+            const propiedad = propiedades.find(
+              (propiedad) => propiedad.id == id
+            );
+            if (!propiedad) {
+              console.log("propiedad no encontrada");
+              return;
+            }
+            const imagenToDel = propiedad.imagen;
+            try {
+              // Verificar si la imagen existe
+              const existeResponse = await axios.get(
+                `http://localhost:3000/imagenes/${imagenToDel}`
+              );
+              if (existeResponse) {
+                await axios.delete(
+                  `http://localhost:3000/imagenes/${imagenToDel}`
+                );
+              }
+            } catch (error) {
+              if (error.response && error.response.status === 404) {
+                console.log("Imagen no encontrada");
+              } else {
+                console.error(
+                  "Error al verificar la existencia de la imagen:",
+                  error
+                );
+              }
+            }
 
+            // /* if (propiedad.imagen)  validar si la imagen existe en la carpeta imagenes{ */
+            //   const imagenToDel = propiedad.imagen;
 
-
-
-
+            //   await axios.delete(
+            //     `http://localhost:3000/imagenes/${imagenToDel}`
+            //   );
 
             const propRef = ref(db, `propiedades/${id}`);
             remove(propRef);
