@@ -8,13 +8,15 @@ import CrearPropiedad from "./components/CrearPropiedad";
 import uuid4 from "uuid4";
 import { db } from "../firebase";
 import { ref, get, set, push, update, remove } from "firebase/database";
+
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { GeneralContext } from "./context/GeneralContext";
 import DragDrop from "./components/DragDrop";
 Swal;
-import axios from "axios";
+import { storage } from "../firebase";
+import { getStorage, ref as storageRef, deleteObject } from "firebase/storage";
 
 const App = () => {
   const { data, setData } = useContext(GeneralContext);
@@ -114,7 +116,6 @@ const App = () => {
           if (result.isConfirmed) {
             console.log("eliminando");
 
-            //fetch delete axios
             const propiedad = propiedades.find(
               (propiedad) => propiedad.id == id
             );
@@ -122,37 +123,17 @@ const App = () => {
               console.log("propiedad no encontrada");
               return;
             }
-            const imagenToDel = propiedad.imagen;
+
             try {
-              // Verificar si la imagen existe
-              const existeResponse = await axios.get(
-                `http://localhost:3000/imagenes/${imagenToDel}`
-              );
-              if (existeResponse) {
-                await axios.delete(
-                  `http://localhost:3000/imagenes/${imagenToDel}`
-                );
-              }
+              const storage = getStorage();
+              const imgRef = storageRef(storage, propiedad.imagen);
+              await deleteObject(imgRef);
+              console.log("Imagen eliminada de Firebase Storage");
             } catch (error) {
-              if (error.response && error.response.status === 404) {
-                console.log("Imagen no encontrada");
-              } else {
-                console.error(
-                  "Error al verificar la existencia de la imagen:",
-                  error
-                );
-              }
+              console.error("Error al eliminar la imagen:", error);
             }
-
-            // /* if (propiedad.imagen)  validar si la imagen existe en la carpeta imagenes{ */
-            //   const imagenToDel = propiedad.imagen;
-
-            //   await axios.delete(
-            //     `http://localhost:3000/imagenes/${imagenToDel}`
-            //   );
-
             const propRef = ref(db, `propiedades/${id}`);
-            remove(propRef);
+            await remove(propRef);
             getPropiedades();
             Swal.fire({
               title: "Eliminada!",
@@ -161,11 +142,18 @@ const App = () => {
             });
           }
         });
+      } else {
+        console.log("asd");
       }
     } catch (err) {
       console.log(err);
       Swal.fire("Error", "No se pudo eliminar la propiedad", "error");
     }
+  };
+  const eliminarImagen = (imgRef) => {
+    // const propiedad = propiedades.find((propiedad) => propiedad.id == id);
+    // const imgToDel = ref(storage, `/imagenes/${propiedad.imagen}`);
+    // deleteObject(imgToDel)
   };
   return (
     <div>

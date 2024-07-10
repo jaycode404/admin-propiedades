@@ -32,7 +32,7 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
 
   // Manejar el cambio en el input de tipo archivo
   const handleFileUpload = async (e) => {
-    const file = e.target.files[0]; // Suponiendo que solo se sube un archivo a la vez
+    const file = e.target.files[0];
     const storageRef = ref(storage, `imagenes/${file.name}`);
 
     try {
