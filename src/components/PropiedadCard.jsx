@@ -23,7 +23,7 @@ export default function PropiedadCard({ propiedad, eliminarPropiedad }) {
   return (
     <div className="propiedad-card">
       {imagen !== "" ? (
-        <img src={`/imagenes/${imagen}`} alt="" />
+        <img src={`${imagen}`} alt="" />
       ) : (
         <img src="/assets/propiedad-1.jpg" alt="" />
       )}
@@ -34,7 +34,7 @@ export default function PropiedadCard({ propiedad, eliminarPropiedad }) {
         </div> */}
         {/* <div>
           <h3>imagen:</h3>
-          <p>{imagen === '' ? 'no hay imagen' : `${imagen}`}</p>
+          <p>{imagen === "" ? "no hay imagen" : `${imagen}`}</p>
         </div> */}
         <div>
           <h3>Nombre:</h3>

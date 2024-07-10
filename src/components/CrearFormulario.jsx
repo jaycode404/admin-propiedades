@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../firebase";
 
 const propInitialState = {
   id: null,
@@ -22,7 +23,6 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
   const propiedadToEdit = location.state?.propiedad || null;
   const [propiedad, setPropiedad] = useState(propInitialState);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [file, setFile] = useState();
 
   useEffect(() => {
     if (propiedadToEdit) {
@@ -30,40 +30,55 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
     }
   }, [propiedadToEdit]);
 
-  //handleChange
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "imagen") {
-      setFile(e.target.files[0]);
-      setPropiedad(prevPropiedad => ({
-        ...prevPropiedad,
-        imagen: e.target.files[0].name
-      }))
-      console.log(files[0].name);
-    } else {
-      setPropiedad((prevPropiedad) => ({
-        ...prevPropiedad,
-        [name]: value,
-      }));
+  // Manejar el cambio en el input de tipo archivo
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0]; // Suponiendo que solo se sube un archivo a la vez
+    const storageRef = ref(storage, `imagenes/${file.name}`);
+
+    try {
+      // Subir el archivo a Firebase Storage de manera resumible
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      // Escuchar eventos de estado de la tarea de carga
+      uploadTask.on("state_changed", 
+        (snapshot) => {
+          // Manejar el progreso de subida
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setUploadProgress(progress);
+        },
+        (error) => {
+          console.error("Error al subir el archivo:", error);
+        },
+        () => {
+          // Subida completa, obtener la URL de descarga
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log("URL de descarga:", downloadURL);
+            setPropiedad((prevPropiedad) => ({
+              ...prevPropiedad,
+              imagen: downloadURL,
+            }));
+          });
+        }
+      );
+    } catch (error) {
+      console.error("Error al subir el archivo:", error);
     }
   };
+  // Manejar el cambio en otros inputs del formulario
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPropiedad((prevPropiedad) => ({
+      ...prevPropiedad,
+      [name]: value,
+    }));
+  };
 
+  // Manejar el envío del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Crear una instancia de FormData
-    const formData = new FormData();
-    formData.append("imagen", file);
-
-    // Enviar la imagen al servidor
-    const response = axios.post("http://localhost:3000/imagenes", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
-    // Verificar la estructura de la respuesta del servidor
-    console.log("Respuesta del servidor:", response.data);
     if (propiedad.id !== null) {
       editarPropiedad(propiedad);
     } else {
@@ -73,20 +88,13 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
     navigate("/propiedades");
   };
 
-  /*  if (propiedad.id !== null) {
-        editarPropiedad(propiedad);
-      } else {
-        crearPropiedad(propiedad);
-      }
-      setPropiedad(propInitialState);
-      navigate("/propiedades");*/
   return (
     <div className="form-card crear-form">
       <h2>{propiedad.id ? "Editar" : "Crear"}</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="imagen">Imagen:</label>
-          <input type="file" name="imagen" onChange={handleChange} />
+          <input type="file" name="imagen" onChange={handleFileUpload} />
           {uploadProgress > 0 && <progress value={uploadProgress} max={100} />}
         </div>
         <div>
@@ -192,5 +200,4 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
     </div>
   );
 };
-
 export default CrearFormulario;
