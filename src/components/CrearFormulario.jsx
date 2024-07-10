@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const propInitialState = {
   id: null,
@@ -21,6 +22,7 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
   const propiedadToEdit = location.state?.propiedad || null;
   const [propiedad, setPropiedad] = useState(propInitialState);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [file, setFile] = useState();
 
   useEffect(() => {
     if (propiedadToEdit) {
@@ -32,10 +34,11 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "imagen") {
-      setPropiedad((prevPropiedad) => ({
+      setFile(e.target.files[0]);
+      setPropiedad(prevPropiedad => ({
         ...prevPropiedad,
-        imagen: files[0].name,
-      }));
+        imagen: e.target.files[0].name
+      }))
       console.log(files[0].name);
     } else {
       setPropiedad((prevPropiedad) => ({
@@ -45,37 +48,29 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     // Crear una instancia de FormData
     const formData = new FormData();
-    formData.append("imagen", propiedad.imagen);
+    formData.append("imagen", file);
 
-    try {
-      // Enviar la imagen al servidor
-      const response = await axios.post(
-        "http://localhost:3000/imagenes",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+    // Enviar la imagen al servidor
+    const response = axios.post("http://localhost:3000/imagenes", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-      // Verificar la estructura de la respuesta del servidor
-      console.log("Respuesta del servidor:", response.data);
-      if (propiedad.id !== null) {
-        editarPropiedad(propiedad);
-      } else {
-        crearPropiedad(propiedad);
-      }
-      setPropiedad(propInitialState);
-      navigate("/propiedades");
-    } catch (error) {
-      console.error("Error al subir la imagen:", error);
+    // Verificar la estructura de la respuesta del servidor
+    console.log("Respuesta del servidor:", response.data);
+    if (propiedad.id !== null) {
+      editarPropiedad(propiedad);
+    } else {
+      crearPropiedad(propiedad);
     }
+    setPropiedad(propInitialState);
+    navigate("/propiedades");
   };
 
   /*  if (propiedad.id !== null) {

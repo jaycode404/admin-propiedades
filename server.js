@@ -44,32 +44,4 @@ app.listen(port, () => {
   console.log(`escuchando en puerto ${port}`);
 });
 
-/* import express from "express";
-import multer from "multer";
 
-const app = express();
-const port = process.env.PORT || 3000;
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "/imagenes");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-
-const upload = multer({ storage });
-
-app.get("/", (req, res) => {
-  res.send("hola desde server.js");
-});
-
-app.post("/imagenes", upload.single("imagen"), (req, res) => {
-  res.send("archivo subido con exito");
-});
-
-app.listen(port, () => {
-  console.log(`escuchando en puerto ${port}`);
-});
- */

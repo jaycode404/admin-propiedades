@@ -112,6 +112,14 @@ const App = () => {
         }).then((result) => {
           if (result.isConfirmed) {
             console.log("eliminando");
+            
+
+
+
+
+
+
+
             const propRef = ref(db, `propiedades/${id}`);
             remove(propRef);
             getPropiedades();
