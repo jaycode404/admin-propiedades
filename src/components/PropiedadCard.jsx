@@ -32,10 +32,10 @@ export default function PropiedadCard({ propiedad, eliminarPropiedad }) {
           <h3>id:</h3>
           <p>{id}</p>
         </div>
-        {/* <div>
+        <div>
           <h3>imagen:</h3>
-          <p>{imagen === '' ? 'no hay imagen' : 'si hay'}</p>
-        </div> */}
+          <p>{imagen === '' ? 'no hay imagen' : `${imagen}`}</p>
+        </div>
         <div>
           <h3>Nombre:</h3>
           <p>{nombre}</p>

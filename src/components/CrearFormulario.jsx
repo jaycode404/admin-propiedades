@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const propInitialState = {
   id: null,
@@ -12,13 +13,14 @@ const propInitialState = {
   numero_de_inquilinos: "",
   duracion_de_contrato: "",
   tiempo_restante_de_contrato: "",
-  imagen: '',
+  imagen: "",
 };
 const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const propiedadToEdit = location.state?.propiedad || null;
   const [propiedad, setPropiedad] = useState(propInitialState);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     if (propiedadToEdit) {
@@ -28,32 +30,61 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
 
   //handleChange
   const handleChange = (e) => {
-    const { name, value, type, checked, files } = e.target;
-    if (type === "file") {
+    const { name, value, files } = e.target;
+    if (name === "imagen") {
       setPropiedad((prevPropiedad) => ({
         ...prevPropiedad,
-        [name]: files[0]?.name.replace(/^.*[\\\/]/, ""),
+        imagen: files[0].name,
       }));
       console.log(files[0].name);
     } else {
       setPropiedad((prevPropiedad) => ({
         ...prevPropiedad,
-        [name]: type === "checkbox" ? checked : value,
+        [name]: value,
       }));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (propiedad.id !== null) {
-      editarPropiedad(propiedad);
-    } else {
-      crearPropiedad(propiedad);
+
+    // Crear una instancia de FormData
+    const formData = new FormData();
+    formData.append("imagen", propiedad.imagen);
+
+    try {
+      // Enviar la imagen al servidor
+      const response = await axios.post(
+        "http://localhost:3000/imagenes",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // Verificar la estructura de la respuesta del servidor
+      console.log("Respuesta del servidor:", response.data);
+      if (propiedad.id !== null) {
+        editarPropiedad(propiedad);
+      } else {
+        crearPropiedad(propiedad);
+      }
+      setPropiedad(propInitialState);
+      navigate("/propiedades");
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
     }
-    setPropiedad(propInitialState);
-    navigate("/propiedades");
   };
 
+  /*  if (propiedad.id !== null) {
+        editarPropiedad(propiedad);
+      } else {
+        crearPropiedad(propiedad);
+      }
+      setPropiedad(propInitialState);
+      navigate("/propiedades");*/
   return (
     <div className="form-card crear-form">
       <h2>{propiedad.id ? "Editar" : "Crear"}</h2>
@@ -61,6 +92,7 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
         <div>
           <label htmlFor="imagen">Imagen:</label>
           <input type="file" name="imagen" onChange={handleChange} />
+          {uploadProgress > 0 && <progress value={uploadProgress} max={100} />}
         </div>
         <div>
           <label htmlFor="nombre">Nombre:</label>
