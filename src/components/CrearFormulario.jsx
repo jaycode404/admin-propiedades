@@ -91,10 +91,16 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
     navigate("/propiedades");
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className="form-card crear-form">
       <h2>{propiedad.id ? "Editar" : "Crear"}</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
         <div>
           <label htmlFor="imagen">Imagen:</label>
           <input type="file" name="imagen" onChange={handleFileUpload} />
@@ -154,6 +160,7 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
         <div>
           <label htmlFor="dia_de_pago">Día de Pago:</label>
           <input
+            required
             type="number"
             id="dia_de_pago"
             name="dia_de_pago"
@@ -164,6 +171,7 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
         <div>
           <label htmlFor="numero_de_inquilinos">Número de Inquilinos:</label>
           <input
+            required
             type="number"
             id="numero_de_inquilinos"
             name="numero_de_inquilinos"
@@ -174,6 +182,7 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
         <div>
           <label htmlFor="duracion_de_contrato">Duración de Contrato:</label>
           <input
+            required
             type="text"
             id="duracion_de_contrato"
             name="duracion_de_contrato"
@@ -186,6 +195,7 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
             Tiempo Restante de Contrato:
           </label>
           <input
+            required
             type="text"
             id="tiempo_restante_de_contrato"
             name="tiempo_restante_de_contrato"
@@ -194,6 +204,7 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
           />
         </div>
         <button
+          required
           type="submit"
           className={`button ${propiedad.id ? "button-green" : "button-blue"}`}
         >
