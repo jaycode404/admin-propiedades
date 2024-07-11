@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { getStorage, ref, uploadBytes, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { storage } from "../../firebase";
 
 const propInitialState = {
@@ -30,19 +36,17 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
     }
   }, [propiedadToEdit]);
 
-  // Manejar el cambio en el input de tipo archivo
+  //handle upload
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     const storageRef = ref(storage, `imagenes/${file.name}`);
 
     try {
-      // Subir el archivo a Firebase Storage de manera resumible
       const uploadTask = uploadBytesResumable(storageRef, file);
 
-      // Escuchar eventos de estado de la tarea de carga
-      uploadTask.on("state_changed", 
+      uploadTask.on(
+        "state_changed",
         (snapshot) => {
-          // Manejar el progreso de subida
           const progress = Math.round(
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100
           );
@@ -52,7 +56,6 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
           console.error("Error al subir el archivo:", error);
         },
         () => {
-          // Subida completa, obtener la URL de descarga
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             console.log("URL de descarga:", downloadURL);
             setPropiedad((prevPropiedad) => ({
@@ -66,16 +69,16 @@ const CrearFormulario = ({ crearPropiedad, editarPropiedad }) => {
       console.error("Error al subir el archivo:", error);
     }
   };
-  // Manejar el cambio en otros inputs del formulario
+  //handleChange
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, type, checked, value } = e.target;
     setPropiedad((prevPropiedad) => ({
       ...prevPropiedad,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
-  // Manejar el envío del formulario
+  //handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
