@@ -1,16 +1,16 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { GeneralContext } from "../context/GeneralContext";
 import { getAuth, signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
 export const NavList = () => {
-  const links = ["Login"];
   const navigate = useNavigate();
   const { data, setData } = useContext(GeneralContext);
-  const propiedad = {};
 
   const handleCreate = () => {
     navigate("/crear-propiedad");
   };
+  
   const handleLogOut = () => {
     const auth = getAuth();
     signOut(auth)
@@ -35,17 +35,18 @@ export const NavList = () => {
           </button>
         </>
       ) : (
-        <a href={"/"}>Login </a>
+        <Link to="/">Login</Link>
       )}
     </div>
   );
 };
+
 export const Navbar = () => {
   return (
     <nav className="nav-container">
-      <a href="/propiedades">
+      <Link to="/propiedades">
         Pro<span className="text-gradient-blue">piedades</span>
-      </a>
+      </Link>
       <NavList />
     </nav>
   );
