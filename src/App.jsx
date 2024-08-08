@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Header from "./components/Header";
-import { Router, Routes, Route } from "react-router-dom";
+import { Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login";
 import { Navbar } from "./components/Navbar";
 import Propiedades from "./components/Propiedades";
@@ -178,6 +178,7 @@ const App = () => {
             />
           }
         />
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
   );
